@@ -58,7 +58,7 @@ def extract_movies(dom):
         if actor_persons:
             actors.append(actor_persons)
         else:
-            actors.append(str("N"))
+            actors.append(str("-"))
 
     movie_dict = {}
     movie_dict['title'] = title
@@ -74,16 +74,20 @@ def save_csv(outfile, movies):
     """
     Output a CSV file containing highest rated movies.
     """
-    writer = csv.writer(outfile, delimiter=",")
+    writer = csv.writer(outfile)
+    writer.writerow(['sep=,'])
     writer.writerow(['Title', 'Rating', 'Year', 'Actors', 'Runtime'])
     for line in range(len(movies['title'])-1):
-        for i in movies['actors']:
-            for j in i:
-                print(j, end=',')
-                actors = j
-            print("")
+        if ", " in movies['title'][line]:
+            movies['title'][line] = "".join(str(x) for x in movies['title'][line])
+        actorsstring = ""
+        for i in movies['actors'][line]:
+            actorsstring += i
+            actorsstring += ", "
+        actorsstring = actorsstring[:-2]
+
         writer.writerow([movies['title'][line], movies['rating'][line],
-                         movies['year'][line], movies['actors'][line],
+                         movies['year'][line], actorsstring,
                          movies['runtime'][line]])
 
 
