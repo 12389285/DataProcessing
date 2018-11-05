@@ -67,7 +67,7 @@ def extract_movies(dom):
     movie_dict['actors'] = actors
     movie_dict['runtime'] = runtime
 
-    return movie_dict# REPLACE THIS LINE AS WELL IF APPROPRIATE
+    return movie_dict
 
 
 def save_csv(outfile, movies):
