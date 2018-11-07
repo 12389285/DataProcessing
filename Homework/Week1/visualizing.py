@@ -15,10 +15,11 @@ END_YEAR = 2018
 
 # Global dictionary for the data
 data_dict = {str(key): [] for key in range(START_YEAR, END_YEAR)}
+# make year counter to keep up the years
 year_count = {str(key): 0 for key in range(START_YEAR, END_YEAR)}
 
 def visualize(file):
-
+    # open csv file
     with open (file) as movies:
         # make header because of use sep=, in moviescraper.py
         movie_reader = csv.DictReader(movies, fieldnames = ['Title', 'Rating',
@@ -37,6 +38,7 @@ def visualize(file):
                 data_dict[year] += float(row['Rating'])
                 year_count[year] += 1
 
+        # make lists to return
         av_rating = []
         year_movie = []
         # add average per year to data dictionary
@@ -46,6 +48,7 @@ def visualize(file):
             # calculate average rating
             data_dict[year] = data_dict[year] / year_count[year]
             data_dict[year] = round(data_dict[year], 1)
+            # add data to lists
             av_rating.append(data_dict[year])
             year_movie.append(int(year))
 

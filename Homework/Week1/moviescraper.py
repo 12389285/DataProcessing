@@ -19,30 +19,27 @@ OUTPUT_CSV = 'movies.csv'
 def extract_movies(dom):
     """
     Extract a list of highest rated movies from DOM (of IMDB page).
-    Each movie entry should contain the following fields:
-    - Title
-    - Rating
-    - Year of release (only a number!)
-    - Actors/actresses (comma separated if more than one)
-    - Runtime (only a number!)
     """
     title = []
     rating = []
     year = []
     actors = []
     runtime = []
+
     # grabs each movie
     movies = dom.findAll("div", {"class":"lister-item-content"})
 
-    movie = movies[0].findAll("p", {"class":""})[1]
+
 
     # loop threw all moviess
     for i in range(len(movies)):
         title.append(movies[i].h3.a.string)
         rating.append(movies[i].div.div.strong.string)
-        year.append(movies[i].find("span", {"class":"lister-item-year"}).string.strip("I ()"))
-        runtime.append(movies[i].find("span", {"class":"runtime"}).string.strip("min "))
-
+        year.append(movies[i].find("span", {"class":"lister-item-year"}).
+                                   string.strip("I ()"))
+        runtime.append(movies[i].find("span", {"class":"runtime"}).
+                                   string.strip("min "))
+        # get actors froms imdb separated with ','
         actor_persons = []
         actor_lines = movies[i].findAll("p", {"class":""})[1]
         for actor in actor_lines:
@@ -60,6 +57,7 @@ def extract_movies(dom):
         else:
             actors.append(str("-"))
 
+    # make dictionary for all types to return
     movie_dict = {}
     movie_dict['title'] = title
     movie_dict['rating'] = rating
@@ -75,17 +73,22 @@ def save_csv(outfile, movies):
     Output a CSV file containing highest rated movies.
     """
     writer = csv.writer(outfile)
+    # separate columns with ','
     writer.writerow(['sep=,'])
+    # write headers
     writer.writerow(['Title', 'Rating', 'Year', 'Actors', 'Runtime'])
+    # write row for row with all types
     for line in range(len(movies['title'])-1):
         if ", " in movies['title'][line]:
             movies['title'][line] = "".join(str(x) for x in movies['title'][line])
+        # make string to write actors from list
         actorsstring = ""
         for i in movies['actors'][line]:
             actorsstring += i
             actorsstring += ", "
         actorsstring = actorsstring[:-2]
 
+        # write rows
         writer.writerow([movies['title'][line], movies['rating'][line],
                          movies['year'][line], actorsstring,
                          movies['runtime'][line]])
