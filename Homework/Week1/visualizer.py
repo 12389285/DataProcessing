@@ -27,7 +27,6 @@ def visualize(file):
         # start counting in row 2
         for i in range(2):
             next(movie_reader)
-
         # total of years and rating
         for row in movie_reader:
             year = row['Year']
