@@ -28,6 +28,12 @@ def file(INPUT_FILE):
             pop_den = row['Pop. Density (per sq. mi.)']
             infant = row['Infant mortality (per 1000 births)']
             gdp = row['GDP ($ per capita) dollars'].strip(' dollars')
+            if infant == '':
+                infant = 'unknown'
+            if gdp == '' or 'unknown':
+                gdp = 0
+
+            gdp = float(gdp)
 
             # add data to all lists
             countries.append(country)
@@ -36,6 +42,10 @@ def file(INPUT_FILE):
             infant_mortality.append(infant)
             gdp_dollars.append(gdp)
 
+        df = pd.DataFrame(data_dict)
+        print(df.mean(gdp_dollars))
+
+
         # add data to data_dict
         data_dict['Country'] = countries
         data_dict['Region'] = regions
@@ -43,7 +53,8 @@ def file(INPUT_FILE):
         data_dict['Infant mortality'] = infant_mortality
         data_dict['GDP (dollars)'] = gdp_dollars
 
-        print(pd.DataFrame(data_dict))
+        # print(pd.DataFrame(data_dict))
+        # print(gdp_dollars)
 
 
 if __name__ == "__main__":
