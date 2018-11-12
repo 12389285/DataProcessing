@@ -25,6 +25,7 @@ def parse(input):
         population_density = []
         infant_mortality = []
         gdp_dollars = []
+        # make list for central tendency and five number summary
         gdp_freq = []
         infant_five = []
 
@@ -76,7 +77,7 @@ def parse(input):
         # make dataframe with all data
         df = pd.DataFrame(data_dict)
 
-        return df, gdp_freq, infant_five
+        return df, gdp_freq, infant_five, data_dict
 
 def histogram(gdp_freq, df):
 
@@ -94,7 +95,8 @@ def histogram(gdp_freq, df):
     plt.ylabel('Frequency')
     plt.title('Frequency of GDP')
 
-    return plt.show()
+    # return plt.show()
+    return True
 
 def five_num(infant_five):
     '''making a boxplot'''
@@ -114,12 +116,21 @@ def five_num(infant_five):
     plt.boxplot(infant_five, flierprops=red_diamond, patch_artist='b')
     plt.title('Infant mortality (per 1000 births)')
 
-    return plt.show()
+    # return plt.show()
+    return True
 
-def json_file(df):
+def json_file(df, data_dict):
     '''writing data to a json file'''
 
-    dic = {}
+    json_dic = {}
+
+    for index, country in enumerate(data_dict['Country']):
+        json_dic[country] = {}
+        for key in HEADERS:
+            if key is not 'Country':
+                json_dic[country][key] = df[index]
+
+    print(json_dic)
 
     return True
 
@@ -128,7 +139,7 @@ def main(input):
     '''main fuction'''
 
     # parse the data from INPUT_FILE
-    df, gdp_freq, infant_five = parse(input)
+    df, gdp_freq, infant_five, data_dict = parse(input)
 
     # central tendency
     hist = histogram(gdp_freq, df)
@@ -137,7 +148,7 @@ def main(input):
     five = five_num(infant_five)
 
     # convert to json json file
-    file = json_file(df)
+    file = json_file(df, data_dict)
 
 if __name__ == "__main__":
     main(INPUT_FILE)
