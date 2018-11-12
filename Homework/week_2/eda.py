@@ -30,10 +30,11 @@ def file(INPUT_FILE):
             gdp = row['GDP ($ per capita) dollars'].strip(' dollars')
             if infant == '':
                 infant = 'unknown'
-            if gdp == '' or 'unknown':
-                gdp = 0
-
-            gdp = float(gdp)
+            if gdp == 'unknown' or gdp == '':
+                gdp = None
+            if gdp != None:
+                gdp = float(gdp)
+            # print(gdp)
 
             # add data to all lists
             countries.append(country)
@@ -42,19 +43,25 @@ def file(INPUT_FILE):
             infant_mortality.append(infant)
             gdp_dollars.append(gdp)
 
-        df = pd.DataFrame(data_dict)
-        print(df.mean(gdp_dollars))
-
+        # map(float, gdp_dollars)
+        # print(gdp_dollars)
 
         # add data to data_dict
         data_dict['Country'] = countries
         data_dict['Region'] = regions
         data_dict['Pop. Density'] = population_density
         data_dict['Infant mortality'] = infant_mortality
-        data_dict['GDP (dollars)'] = gdp_dollars
+        data_dict['GDP_dollars'] = gdp_dollars
 
-        # print(pd.DataFrame(data_dict))
-        # print(gdp_dollars)
+        df = pd.DataFrame(data_dict)
+        mean = round(df.GDP_dollars.mean(), 2)
+        median = int(df.GDP_dollars.median())
+        mode = int(df.GDP_dollars.mode())
+
+        print(mean, median, mode)
+
+
+        # print(df)
 
 
 if __name__ == "__main__":
