@@ -4,10 +4,13 @@ import csv
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from numpy import percentile
+import json
 
 INPUT_FILE = "input.csv"
 
 def main(INPUT_FILE):
+
     with open(INPUT_FILE) as file:
         input_reader = csv.DictReader(file)
 
@@ -18,6 +21,7 @@ def main(INPUT_FILE):
         infant_mortality = []
         gdp_dollars = []
         gdp_freq = []
+        infant_five = []
 
         # make dictionary for data storage
         data_dict = {str(key): [] for key in range(len(countries))}
@@ -45,6 +49,7 @@ def main(INPUT_FILE):
                 gdp_freq.append(int(gdp))
             if infant != None:
                 infant = float(infant)
+                infant_five.append(infant)
             if pop_den != None:
                 pop_den = float(pop_den)
 
@@ -74,14 +79,43 @@ def main(INPUT_FILE):
 
         # plot GDP data using histogram with the frequency of GDP_dollars
         # see analyze.txt for explanation
-        plt.hist(gdp_freq, bins=25, histtype='bar', rwidth=0.8, color='g')
-        plt.xlabel('GDP in dollars')
-        plt.ylabel('Frequency')
-        plt.title('Frequency of GDP')
+        # plt.hist(gdp_freq, bins=25, histtype='bar', rwidth=0.8, color='g')
+        # plt.xlabel('GDP in dollars')
+        # plt.ylabel('Frequency')
+        # plt.title('Frequency of GDP')
+        # plt.show()
 
-        plt.show()
-        # print(df)
+        # five number summary
+        # calculate quartiles
+        quartiles = percentile(infant_five, [25, 50, 75])
+
+        # calculate the five number summary
+        min_infant = min(infant_five)
+        q1 = quartiles[0]
+        median_infant = quartiles[1]
+        q3 = quartiles[2]
+        max_infant = max(infant_five)
+        data_infant = [min_infant, q1,median_infant, q3, max_infant]
+
+        # boxplot infant mortality
+        # red_diamond = dict(markerfacecolor='r', marker='D')
+        # plt.boxplot(infant_five, flierprops=red_diamond, patch_artist='b')
+        # plt.title('Infant mortality (per 1000 births)')
+        #
+        # plt.show()
+
+        return data_dict
+
+        # with open('analyzed.json', 'w') as outfile:
+        #         json.dump(data_dict, outfile)
+
+def json_file(df):
+
+    print(data_dict)
+
+    # df_key = {str(key): [] for key in range(len(countries))}
 
 
 if __name__ == "__main__":
-    main(INPUT_FILE)
+    data_dict = main(INPUT_FILE)
+    json_file(data_dict)
