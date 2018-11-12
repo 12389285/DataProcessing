@@ -1,4 +1,5 @@
-
+# Name: Max Simons
+# id: 12389285
 
 import csv
 import numpy as np
@@ -8,10 +9,14 @@ from numpy import percentile
 import json
 
 INPUT_FILE = "input.csv"
+HEADERS = ['Country', 'Region', 'Pop. Density (per sq. mi.)',
+            'Infant mortality (per 1000 births)', 'GDP ($ per capita) dollars']
 
-def main(INPUT_FILE):
+def parse(input):
 
-    with open(INPUT_FILE) as file:
+    '''parsing data'''
+
+    with open(input) as file:
         input_reader = csv.DictReader(file)
 
         # make seperate lists for data
@@ -71,51 +76,68 @@ def main(INPUT_FILE):
         # make dataframe with all data
         df = pd.DataFrame(data_dict)
 
-        # get the mean, median, mode and standard deviation from GDP data
-        mean = round(df.GDP_dollars.mean(), 2)
-        median = int(df.GDP_dollars.median())
-        mode = int(df.GDP_dollars.mode())
-        deviation  = round(df.GDP_dollars.std(), 2)
+        return df, gdp_freq, infant_five
 
-        # plot GDP data using histogram with the frequency of GDP_dollars
-        # see analyze.txt for explanation
-        # plt.hist(gdp_freq, bins=25, histtype='bar', rwidth=0.8, color='g')
-        # plt.xlabel('GDP in dollars')
-        # plt.ylabel('Frequency')
-        # plt.title('Frequency of GDP')
-        # plt.show()
+def histogram(gdp_freq, df):
 
-        # five number summary
-        # calculate quartiles
-        quartiles = percentile(infant_five, [25, 50, 75])
+    '''making a histogram'''
 
-        # calculate the five number summary
-        min_infant = min(infant_five)
-        q1 = quartiles[0]
-        median_infant = quartiles[1]
-        q3 = quartiles[2]
-        max_infant = max(infant_five)
-        data_infant = [min_infant, q1,median_infant, q3, max_infant]
+    # get the mean, median, mode and standard deviation from GDP data
+    mean = round(df.GDP_dollars.mean(), 2)
+    median = int(df.GDP_dollars.median())
+    mode = int(df.GDP_dollars.mode())
+    deviation  = round(df.GDP_dollars.std(), 2)
 
-        # boxplot infant mortality
-        # red_diamond = dict(markerfacecolor='r', marker='D')
-        # plt.boxplot(infant_five, flierprops=red_diamond, patch_artist='b')
-        # plt.title('Infant mortality (per 1000 births)')
-        #
-        # plt.show()
+    # plot GDP data using histogram with the frequency of GDP_dollars
+    plt.hist(gdp_freq, bins=25, histtype='bar', rwidth=0.8, color='g')
+    plt.xlabel('GDP in dollars')
+    plt.ylabel('Frequency')
+    plt.title('Frequency of GDP')
 
-        return data_dict
+    return plt.show()
 
-        # with open('analyzed.json', 'w') as outfile:
-        #         json.dump(data_dict, outfile)
+def five_num(infant_five):
+    '''making a boxplot'''
+
+    # calculate quartiles
+    quartiles = percentile(infant_five, [25, 50, 75])
+
+    # calculate the five number summary
+    min_infant = min(infant_five)
+    q1 = quartiles[0]
+    median_infant = quartiles[1]
+    q3 = quartiles[2]
+    max_infant = max(infant_five)
+
+    # boxplot infant mortality
+    red_diamond = dict(markerfacecolor='r', marker='D')
+    plt.boxplot(infant_five, flierprops=red_diamond, patch_artist='b')
+    plt.title('Infant mortality (per 1000 births)')
+
+    return plt.show()
 
 def json_file(df):
+    '''writing data to a json file'''
 
-    print(data_dict)
+    dic = {}
 
-    # df_key = {str(key): [] for key in range(len(countries))}
+    return True
 
+def main(input):
+
+    '''main fuction'''
+
+    # parse the data from INPUT_FILE
+    df, gdp_freq, infant_five = parse(input)
+
+    # central tendency
+    hist = histogram(gdp_freq, df)
+
+    # five number summary
+    five = five_num(infant_five)
+
+    # convert to json json file
+    file = json_file(df)
 
 if __name__ == "__main__":
-    data_dict = main(INPUT_FILE)
-    json_file(data_dict)
+    main(INPUT_FILE)
