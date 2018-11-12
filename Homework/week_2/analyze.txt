@@ -1,0 +1,10 @@
+name: Max Simmons
+id: 12389285
+
+Tijdens het plotten van de frequency in een histogram werd het duidelijk
+dat er in de data twee outliers zitten. Dit zijn de landen Suriname met
+een GDP van 400000 dollar en Luxembourg met een GDP van 55100 dollars.
+Suriname is niet een land waar het logisch zou zijn om een GDP van 400000
+dollar te hebben. Deze waarde is niet juist en heb de waarde ingeruild met
+None waarde. Luxembourg daarin tegen is ook niet juist want die is veel meer.
+Om niet alle waarden te hoeven aanpassen heb ik alleen Suriname verwijderd.
