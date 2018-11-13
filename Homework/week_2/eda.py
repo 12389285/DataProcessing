@@ -1,10 +1,14 @@
 # Name: Max Simons
-# id: 12389285
+# ID: 12389285
+# Subject: DataProcessing
+# Project: Exploratory Data Analysis
+# Date: 14/11/2018
 
 import csv
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy import stats
 from numpy import percentile
 import json
 
@@ -13,13 +17,15 @@ HEADERS = ['Country', 'Region', 'Pop. Density (per sq. mi.)',
             'Infant mortality (per 1000 births)', 'GDP ($ per capita) dollars']
 
 def parse(input):
-
-    '''parsing data'''
-
+    """
+    parsing data from a csv file called input.csv. Checking data for missing
+    values and/or invalid values. Returning a DataFrame, data dictionary, lists
+    with values for making a histogram and a boxplot. Invalid values has removed.
+    """
     with open(input) as file:
         input_reader = csv.DictReader(file)
 
-        # make seperate lists for data
+        # make seperate lists for data to put in data dictionary
         countries = []
         regions = []
         population_density = []
@@ -32,6 +38,7 @@ def parse(input):
         # make dictionary for data storage
         data_dict = {str(key): [] for key in range(len(countries))}
 
+        # read in csv file per row
         for row in input_reader:
             # get data from csv file per row
             country = row['Country'].strip()
@@ -50,9 +57,9 @@ def parse(input):
 
             # make floats
             if gdp != None:
-                gdp = float(gdp)
+                gdp = int(gdp)
                 # make list without None values for histogram
-                gdp_freq.append(int(gdp))
+                gdp_freq.append(gdp)
             if infant != None:
                 infant = float(infant)
                 infant_five.append(infant)
@@ -66,41 +73,44 @@ def parse(input):
             infant_mortality.append(infant)
             gdp_dollars.append(gdp)
 
-
         # add data to data_dict
         data_dict['Country'] = countries
         data_dict['Region'] = regions
-        data_dict['Pop_Density'] = population_density
-        data_dict['Infant_mortality'] = infant_mortality
-        data_dict['GDP_dollars'] = gdp_dollars
+        data_dict['Pop. Density (per sq. mi.)'] = population_density
+        data_dict['Infant mortality (per 1000 births)'] = infant_mortality
+        data_dict['GDP ($ per capita) dollars'] = gdp_dollars
 
         # make dataframe with all data
         df = pd.DataFrame(data_dict)
 
         return df, gdp_freq, infant_five, data_dict
 
-def histogram(gdp_freq, df):
+def histogram(gdp_freq):
 
-    '''making a histogram'''
-
+    """
+    Returns a histogram of the frequency of GDP in dollars, using data from
+    list. Compute the mean, median, mode and standard deviation.
+    """
     # get the mean, median, mode and standard deviation from GDP data
-    mean = round(df.GDP_dollars.mean(), 2)
-    median = int(df.GDP_dollars.median())
-    mode = int(df.GDP_dollars.mode())
-    deviation  = round(df.GDP_dollars.std(), 2)
+    mean = round(np.mean(gdp_freq), 2)
+    median = int(np.median(gdp_freq))
+    mode = int(stats.mode(gdp_freq)[0][0])
+    deviation  = round(np.std(gdp_freq), 2)
 
-    # plot GDP data using histogram with the frequency of GDP_dollars
+    # plot GDP data using histogram with the frequency of gdp in dollars
     plt.hist(gdp_freq, bins=25, histtype='bar', rwidth=0.8, color='g')
-    plt.xlabel('GDP in dollars')
+    plt.xlabel('GDP ($ per capita) dollars')
     plt.ylabel('Frequency')
-    plt.title('Frequency of GDP')
+    plt.title('Frequency of GDP ($ per capita) dollars')
+    histogram = plt.show()
 
-    # return plt.show()
-    return True
+    return histogram
 
 def five_num(infant_five):
-    '''making a boxplot'''
-
+    """
+    Returns a boxplot using five number summary methode of showing the minimum,
+    q1, median, q3, maximum and outliers.
+    """
     # calculate quartiles
     quartiles = percentile(infant_five, [25, 50, 75])
 
@@ -111,44 +121,50 @@ def five_num(infant_five):
     q3 = quartiles[2]
     max_infant = max(infant_five)
 
-    # boxplot infant mortality
+    # plot boxplot of infant mortality data
     red_diamond = dict(markerfacecolor='r', marker='D')
     plt.boxplot(infant_five, flierprops=red_diamond, patch_artist='b')
     plt.title('Infant mortality (per 1000 births)')
+    boxplot = plt.show()
 
-    # return plt.show()
-    return True
+    return boxplot
 
-def json_file(df, data_dict):
-    '''writing data to a json file'''
-
+def save_json(df, data_dict):
+    """
+    Output a JSON file containing data per country
+    """
+    # dictionary to wright to json file
     json_dic = {}
 
-    for index, country in enumerate(data_dict['Country']):
+    # get an index per country to fill in dictionary
+    for countryindex, country in enumerate(data_dict['Country']):
         json_dic[country] = {}
         for key in HEADERS:
+            # skip country and start with Region
             if key is not 'Country':
-                json_dic[country][key] = 
+                json_dic[country][key] = data_dict[key][countryindex]
 
-    print(json_dic)
+    # write json dictionary to outfile
+    with open('countries.json', 'w') as outfile:
+            json.dump(json_dic, outfile)
 
     return True
 
 def main(input):
-
-    '''main fuction'''
-
+    """
+    Main function to control all other function
+    """
     # parse the data from INPUT_FILE
     df, gdp_freq, infant_five, data_dict = parse(input)
 
     # central tendency
-    hist = histogram(gdp_freq, df)
+    hist = histogram(gdp_freq)
 
     # five number summary
     five = five_num(infant_five)
 
-    # convert to json json file
-    file = json_file(df, data_dict)
+    # convert to json file
+    file = save_json(df, data_dict)
 
 if __name__ == "__main__":
     main(INPUT_FILE)
