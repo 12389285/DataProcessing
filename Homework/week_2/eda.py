@@ -91,14 +91,14 @@ def histogram(gdp_freq):
     Returns a histogram of the frequency of GDP in dollars, using data from
     list. Compute the mean, median, mode and standard deviation.
     """
-    # get the mean, median, mode and standard deviation from GDP data
+    # compute the mean, median, mode and standard deviation from GDP data
     mean = round(np.mean(gdp_freq), 2)
     median = int(np.median(gdp_freq))
     mode = int(stats.mode(gdp_freq)[0][0])
     deviation  = round(np.std(gdp_freq), 2)
 
     # plot GDP data using histogram with the frequency of gdp in dollars
-    plt.hist(gdp_freq, bins=25, histtype='bar', rwidth=0.8, color='g')
+    plt.hist(gdp_freq, bins=30, histtype='bar', rwidth=0.8, color='g')
     plt.xlabel('GDP ($ per capita) dollars')
     plt.ylabel('Frequency')
     plt.title('Frequency of GDP ($ per capita) dollars')
@@ -106,7 +106,7 @@ def histogram(gdp_freq):
 
     return histogram
 
-def five_num(infant_five):
+def boxplot(infant_five):
     """
     Returns a boxplot using five number summary methode of showing the minimum,
     q1, median, q3, maximum and outliers.
@@ -161,7 +161,7 @@ def main(input):
     hist = histogram(gdp_freq)
 
     # five number summary
-    five = five_num(infant_five)
+    five = boxplot(infant_five)
 
     # convert to json file
     file = save_json(df, data_dict)
