@@ -128,7 +128,7 @@ def json_file(df, data_dict):
         json_dic[country] = {}
         for key in HEADERS:
             if key is not 'Country':
-                json_dic[country][key] = df[index]
+                json_dic[country][key] = 
 
     print(json_dic)
 
