@@ -1,0 +1,1 @@
+Tijdens het parsen van de data zag ik dat Suriname een gdp had van 400000 dollar. Deze waarde heb ik opgezocht en gezien dat deze uiteraard niet waar is. Ik heb deze waarde daarom veranderd in None zodat deze outlier niet wordt meegerekend in de histogram en de boxplot. 

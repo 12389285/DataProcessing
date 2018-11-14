@@ -36,7 +36,7 @@ def parse(input):
         infant_five = []
 
         # make dictionary for data storage
-        data_dict = {str(key): [] for key in range(len(countries))}
+        data_dict = {}
 
         # read in csv file per row
         for row in input_reader:
@@ -52,6 +52,7 @@ def parse(input):
                 pop_den = None
             if infant == 'unknown' or infant == '':
                 infant = None
+            # gdp of Surinama is invalid
             if gdp == 'unknown' or gdp == '' or gdp == '400000':
                 gdp = None
 
@@ -73,6 +74,7 @@ def parse(input):
             infant_mortality.append(infant)
             gdp_dollars.append(gdp)
 
+
         # add data to data_dict
         data_dict['Country'] = countries
         data_dict['Region'] = regions
@@ -82,6 +84,7 @@ def parse(input):
 
         # make dataframe with all data
         df = pd.DataFrame(data_dict)
+        print(data_dict)
 
         return df, gdp_freq, infant_five, data_dict
 
@@ -119,6 +122,7 @@ def boxplot(infant_five):
     median_infant = quartiles[1]
     q3 = quartiles[2]
     max_infant = max(infant_five)
+    print(min_infant, q1, median_infant, q3, max_infant)
 
     # plot boxplot of infant mortality data
     red_diamond = dict(markerfacecolor='r', marker='D')
