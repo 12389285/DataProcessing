@@ -86,7 +86,6 @@ def parse(input):
         return df, gdp_freq, infant_five, data_dict
 
 def histogram(gdp_freq):
-
     """
     Returns a histogram of the frequency of GDP in dollars, using data from
     list. Compute the mean, median, mode and standard deviation.
