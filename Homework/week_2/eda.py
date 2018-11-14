@@ -84,7 +84,7 @@ def parse(input):
 
         # make dataframe with all data
         df = pd.DataFrame(data_dict)
-        print(data_dict)
+        
 
         return df, gdp_freq, infant_five, data_dict
 
