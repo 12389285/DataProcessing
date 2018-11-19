@@ -4,16 +4,25 @@
 
 import csv
 import json
+import pandas as pd
 
-# name_file = "races"
-# INPUT_FILE = "races.csv"
+# fill in input file name .csv
+INPUT_FILE = "2018.csv"
 
-csvfile = open('races.csv', 'r')
-jsonfile = open('file.json', 'w')
+# fill in output file name .json
+OUTPUT_FILE = "2018.json"
 
-fieldnames = ("raceId","year","round","circuitId","name","date","time")
-reader = csv.DictReader(csvfile)
+# fill in the fieldnames
+fieldnames = ("GRAND PRIX" , "DATE", "CAR", "RACE POSITION", "PTS")
 
-for row in reader:
-    json.dump(row, jsonfile)
-    jsonfile.write('\n')
+def convert(INPUT_FILE):
+
+    # read csv file with panda
+    df = pd.read_csv(INPUT_FILE)
+
+    # make json file based on records
+    df.reset_index().to_json(OUTPUT_FILE, orient='records')
+
+
+if __name__ == "__main__":
+    convert(INPUT_FILE)

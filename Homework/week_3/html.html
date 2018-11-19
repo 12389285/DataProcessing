@@ -1,0 +1,108 @@
+<!-- Name: Max Simons -->
+<!-- student number: 12389285 -->
+<!--  -->
+
+<head>
+  <title>Points of Max Verstappen</title>
+</head>
+  <h1>2015</h1>
+  <body>
+    <canvas id="myCanvas" width=800 height=700 ></canvas>
+    <script>
+      var fileName = "2015.json";
+      var txtFile = new XMLHttpRequest();
+      txtFile.onreadystatechange = function() {
+        if (txtFile.readyState === 4 && txtFile.status == 200) {
+            console.log(JSON.parse(txtFile.responseText));
+
+            // make lists for using data in linechart
+            var countries = []
+            var points_2015 = []
+
+            // data per element of json file
+            var data_2015 = JSON.parse(txtFile.responseText)
+            data_2015.forEach(function(element) {
+            countries.push(element['GRAND PRIX'])
+            points_2015.push(element['PTS'])
+            });
+
+            // use canvas to draw
+            var can = document.getElementById('myCanvas');
+            var ctx = can.getContext('2d');
+
+            // set maximum for axis
+            xmax = countries.length
+            ymax = 30
+
+            // create axis with transforms function
+            create_y = createTransform([ymax, 0], [100,600])
+            create_x = createTransform([0, xmax], [100,800])
+
+            // set y-as
+            for (var i = 0; i <= ymax; i += 2) {
+              ctx.fillText(i, 75, create_y(i));
+              ctx.beginPath();
+              ctx.lineWidth = 0.5;
+              ctx.moveTo(100, create_y(i));
+              ctx.lineTo(create_x(xmax), create_y(i));
+              ctx.stroke();
+            }
+            // set x-as
+            for (var i = 0; i <= xmax; i++) {
+              ctx.fillText(i, create_x(i), 625);
+            }
+
+            // create axis
+            ctx.beginPath();
+            // settings
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#000';
+            // x-as
+            ctx.moveTo(100, 600);
+            ctx.lineTo(800, 600);
+            // y-as
+            ctx.moveTo(100, 100);
+            ctx.lineTo(100, 600);
+            ctx.stroke();
+
+            // create line for result 2015
+            ctx.beginPath();
+            ctx.strokeStyle = '#f00';
+            ctx.lineWidth = 1.5;
+
+            ctx.moveTo(create_x(0), create_y(points_2015[0]));
+            for (var i = 1; i <= xmax; i++) {
+              ctx.lineTo(create_x(i), create_y(points_2015[i]));
+            }
+            ctx.stroke();
+
+            // create line for result 2016
+            // create line for result 2017
+            // create line for result 2018
+          }
+        }
+      txtFile.open("GET", fileName);
+      txtFile.send();
+
+        function createTransform(domain, range){
+        var domain_min = domain[0]
+        var domain_max = domain[1]
+        var range_min = range[0]
+        var range_max = range[1]
+
+        // formulas to calculate the alpha and the beta
+       	  var alpha = (range_max - range_min) / (domain_max - domain_min)
+        var beta = range_max - alpha * domain_max
+
+        // returns the function for the linear transformation (y= a * x + b)
+        return function(x){
+          return alpha * x + beta;
+        }
+      }
+    </script>
+  </body>
+
+
+
+  //ctx.arc(create_x(i), create_y(points[i]), 3, 0, Math.PI*2);
+  //ctx.fill()
