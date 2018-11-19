@@ -5,25 +5,37 @@
 <head>
   <title>Points of Max Verstappen</title>
 </head>
-  <h1>2015</h1>
+  <h1 align=center>Max Verstappen points season 2015 - 2018</h1>
   <body>
-    <canvas id="myCanvas" width=800 height=700 ></canvas>
+    <canvas id="myCanvas" width=1500 height=1500 ></canvas>
     <script>
-      var fileName = "2015.json";
+      var fileName = "resultaten.json";
       var txtFile = new XMLHttpRequest();
       txtFile.onreadystatechange = function() {
         if (txtFile.readyState === 4 && txtFile.status == 200) {
             console.log(JSON.parse(txtFile.responseText));
 
             // make lists for using data in linechart
-            var countries = []
+            var countries_2015 = []
+            var countries_2016 = []
+            var countries_2017 = []
+            var countries_2018 = []
             var points_2015 = []
+            var points_2016 = []
+            var points_2017 = []
+            var points_2018 = []
 
             // data per element of json file
             var data_2015 = JSON.parse(txtFile.responseText)
             data_2015.forEach(function(element) {
-            countries.push(element['GRAND PRIX'])
-            points_2015.push(element['PTS'])
+            countries_2015.push(element['GRAND PRIX_2015'])
+            countries_2016.push(element['GRAND PRIX_2016'])
+            countries_2017.push(element['GRAND PRIX_2017'])
+            countries_2018.push(element['GRAND PRIX_2018'])
+            points_2015.push(element['PTS_2015'])
+            points_2016.push(element['PTS_2016'])
+            points_2017.push(element['PTS_2017'])
+            points_2018.push(element['PTS_2018'])
             });
 
             // use canvas to draw
@@ -31,18 +43,20 @@
             var ctx = can.getContext('2d');
 
             // set maximum for axis
-            xmax = countries.length
-            ymax = 30
+            xmax = countries_2015.length - 1
+            ymax = 26
 
             // create axis with transforms function
-            create_y = createTransform([ymax, 0], [100,600])
-            create_x = createTransform([0, xmax], [100,800])
+            create_y = createTransform([ymax, 0], [100,600]);
+            create_x = createTransform([0, xmax], [100,1200]);
 
             // set y-as
             for (var i = 0; i <= ymax; i += 2) {
               ctx.fillText(i, 75, create_y(i));
+              // create thin lines to read data
               ctx.beginPath();
-              ctx.lineWidth = 0.5;
+              ctx.lineWidth = 0.3;
+              ctx.strokeStyle = '#808080';
               ctx.moveTo(100, create_y(i));
               ctx.lineTo(create_x(xmax), create_y(i));
               ctx.stroke();
@@ -59,26 +73,82 @@
             ctx.strokeStyle = '#000';
             // x-as
             ctx.moveTo(100, 600);
-            ctx.lineTo(800, 600);
+            ctx.lineTo(1200, 600);
             // y-as
             ctx.moveTo(100, 100);
             ctx.lineTo(100, 600);
             ctx.stroke();
 
+            // create legend
+            ctx.fillText("Legende:", 1250, 100);
+            ctx.strokeStyle = '#f00';
+            ctx.fillText("--", 1250, 115);
+            ctx.fillText("2015", 1265, 115);
+            ctx.strokeStyle = '#00FF00';
+            ctx.fillText("--", 1250, 130);
+            ctx.fillText("2016", 1265, 130);
+            ctx.strokeStyle = '#FFFF00';
+            ctx.fillText("--", 1250, 145);
+            ctx.fillText("2017", 1265, 145);
+            ctx.strokeStyle = '#0000FF';
+            ctx.fillText("--", 1250, 160);
+            ctx.fillText("2018", 1265, 160);
+
             // create line for result 2015
             ctx.beginPath();
             ctx.strokeStyle = '#f00';
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 2;
 
             ctx.moveTo(create_x(0), create_y(points_2015[0]));
             for (var i = 1; i <= xmax; i++) {
               ctx.lineTo(create_x(i), create_y(points_2015[i]));
+              if (i >= 18){
+                break;
+              }
             }
             ctx.stroke();
 
             // create line for result 2016
+            ctx.beginPath();
+            ctx.strokeStyle = '#00FF00';
+            ctx.lineWidth = 2;
+
+            ctx.moveTo(create_x(0), create_y(points_2016[0]));
+            for (var i = 1; i <= xmax; i++) {
+              ctx.lineTo(create_x(i), create_y(points_2016[i]));
+              if (i >= 20){
+                break;
+              }
+            }
+            ctx.stroke();
+
             // create line for result 2017
+            ctx.beginPath();
+            ctx.strokeStyle = '#FFFF00';
+            ctx.lineWidth = 2;
+
+            ctx.moveTo(create_x(0), create_y(points_2017[0]));
+            for (var i = 1; i <= xmax; i++) {
+              ctx.lineTo(create_x(i), create_y(points_2017[i]));
+              if (i >= 19){
+                break;
+              }
+            }
+            ctx.stroke();
+
             // create line for result 2018
+            ctx.beginPath();
+            ctx.strokeStyle = '#0000FF';
+            ctx.lineWidth = 2;
+
+            ctx.moveTo(create_x(0), create_y(points_2018[0]));
+            for (var i = 1; i <= xmax; i++) {
+              ctx.lineTo(create_x(i), create_y(points_2018[i]));
+              if (i >= 19){
+                break;
+              }
+            }
+            ctx.stroke();
           }
         }
       txtFile.open("GET", fileName);
