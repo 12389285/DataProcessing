@@ -1,0 +1,107 @@
+/* fill viewport, hide scroll bar */
+html, body
+{
+    height: 100%;
+    overflow: scroll;
+    background: #F4F5F5;
+}
+
+/* ensure content is below navbar */
+div.container-fluid
+{
+    padding-top: 56px;
+}
+
+/* fill viewport */
+div.container-fluid, div.row, div.col, div.jumbotron
+{
+    height: 100%;
+}
+
+/* remove padding within column */
+div.col
+{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* add padding around form */
+form
+{
+    padding: 15px;
+}
+
+/* wrap and scroll preformatted text */
+pre
+{
+    height: 100%;
+    overflow: auto;
+    padding: 15px;
+    white-space: pre-wrap;
+}
+
+/* highlight spans */
+span
+{
+    background-color: #ff0;
+}
+
+h
+{
+    font-size: 23px;
+    border: none;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: #121F45;
+    overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    color: #CB2026;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Columns*/
+p
+{
+  font-family: Arial;
+  text-align: justify;
+  padding-top: 25px;
+  padding-left: 25px;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+.column img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+#compare
+{
+    font-size: 18px;
+}

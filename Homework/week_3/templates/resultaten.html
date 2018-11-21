@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+        <!-- Bootstrap CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"/>
+
+        <link href="../static/styles.css" rel="stylesheet"/>
+
+        <title>Verstappen</title>
+    </head>
+    <body>
+        <div class="topnav">
+          <a class="navbar-brand" href="/">Week 3</a>
+          <a class="navbar-brand" href="index.html">Overzicht</a>
+          <a class="navbar-brand" href="resultaten.html">Resultaten</a>
+          <a class="navbar-brand" href="2015.html">2015</a>
+          <a class="navbar-brand" href="2016.html">2016</a>
+          <a class="navbar-brand" href="2017.html">2017</a>
+          <a class="navbar-brand" href="2018.html">2018</a>
+          <a class="navbar-brand" href="data.html">Data</a>
+        </div>
+
+        <div class="container-fluid">
+          <h1 align=center>Max Verstappen resultaten 2015 - 2018</h1>
+          <canvas id="myCanvas" width=1500 height=1500 ></canvas>
+          <script>
+            var fileName = "../resultaten.json";
+            var txtFile = new XMLHttpRequest();
+            txtFile.onreadystatechange = function() {
+              if (txtFile.readyState === 4 && txtFile.status == 200) {
+                  console.log(JSON.parse(txtFile.responseText));
+
+                  // make lists for using data in linechart
+                  var countries_2015 = []
+                  var countries_2016 = []
+                  var countries_2017 = []
+                  var countries_2018 = []
+                  var points_2015 = []
+                  var points_2016 = []
+                  var points_2017 = []
+                  var points_2018 = []
+
+                  // data per element of json file
+                  var data_2015 = JSON.parse(txtFile.responseText);
+                  data_2015.forEach(function(element) {
+                  countries_2015.push(element['GRAND PRIX_2015'])
+                  countries_2016.push(element['GRAND PRIX_2016'])
+                  countries_2017.push(element['GRAND PRIX_2017'])
+                  countries_2018.push(element['GRAND PRIX_2018'])
+                  points_2015.push(element['PTS_2015'])
+                  points_2016.push(element['PTS_2016'])
+                  points_2017.push(element['PTS_2017'])
+                  points_2018.push(element['PTS_2018'])
+                  });
+
+                  // use canvas to draw
+                  var can = document.getElementById('myCanvas');
+                  var ctx = can.getContext('2d');
+
+                  // set maximum for axis
+                  xmax = countries_2015.length - 1
+                  ymax = 25
+
+                  // create axis with transforms function
+                  create_y = createTransform([ymax, 0], [50,600]);
+                  create_x = createTransform([0, xmax], [100,1200]);
+
+                  // set y-as
+                  for (var i = 0; i <= ymax; i += 1) {
+                    ctx.fillText(i, 75, create_y(i));
+
+                    // create small line for y-as
+                    ctx.beginPath();
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = '#000';
+                    ctx.moveTo(95, create_y(i));
+                    ctx.lineTo(101, create_y(i));
+                    ctx.stroke();
+
+                    // create thin lines to read data
+                    ctx.beginPath();
+                    ctx.lineWidth = 0.3;
+                    ctx.strokeStyle = '#808080';
+                    ctx.moveTo(100, create_y(i));
+                    ctx.lineTo(create_x(xmax), create_y(i));
+                    ctx.stroke();
+                  }
+
+                  // set x-as
+                  for (var i = 0; i <= xmax; i++) {
+                    ctx.fillText(i, create_x(i), 625);
+                  }
+
+                  // create axis
+                  ctx.beginPath();
+
+                  // settings
+                  ctx.lineWidth = 3;
+                  ctx.strokeStyle = '#000';
+
+                  // x-as
+                  ctx.moveTo(100, 600);
+                  ctx.lineTo(1200, 600);
+
+                  // y-as
+                  ctx.moveTo(100, 50);
+                  ctx.lineTo(100, 600);
+                  ctx.stroke();
+
+                  // create legend
+                  ctx.font = "20px Arial"
+                  ctx.fillText("Legende:", 1250, 115);
+                  ctx.strokeStyle = '#f00';
+                  ctx.strokeText("--", 1250, 140);
+                  ctx.fillText("2015", 1275, 140);
+                  ctx.strokeStyle = '#00FF00';
+                  ctx.strokeText("--", 1250, 160);
+                  ctx.fillText("2016", 1275, 160);
+                  ctx.strokeStyle = '#0BF5F2';
+                  ctx.strokeText("--", 1250, 180);
+                  ctx.fillText("2017", 1275, 180);
+                  ctx.strokeStyle = '#0000FF';
+                  ctx.strokeText("--", 1250, 200);
+                  ctx.fillText("2018", 1275, 200);
+
+                  // create y lable
+                  ctx.save();
+                  ctx.textAlign = "center"
+                  ctx.font = "20px Arial"
+                  ctx.rotate(-Math.PI / 2);
+                  ctx.fillText("Aantal punten", -320, 40)
+                  ctx.restore();
+
+                  // create x lable
+                  ctx.font = "20px Arial"
+                  ctx.fillText("Grand prix", 650, 670)
+
+                  // create line result 2015
+                  ctx.beginPath();
+                  ctx.strokeStyle = '#f00';
+                  ctx.lineWidth = 2;
+                  ctx.moveTo(create_x(0), create_y(points_2015[0]));
+                  for (var i = 1; i <= xmax; i++) {
+                    ctx.lineTo(create_x(i), create_y(points_2015[i]));
+                    if (i >= 18){
+                      break;
+                    }
+                  }
+                  ctx.stroke();
+
+                  // create line result 2016
+                  ctx.beginPath();
+                  ctx.strokeStyle = '#00FF00';
+                  ctx.lineWidth = 2;
+                  ctx.moveTo(create_x(0), create_y(points_2016[0]));
+                  for (var i = 1; i <= xmax; i++) {
+                    ctx.lineTo(create_x(i), create_y(points_2016[i]));
+                    if (i >= 20){
+                      break;
+                    }
+                  }
+                  ctx.stroke();
+
+                  // create line result 2017
+                  ctx.beginPath();
+                  ctx.strokeStyle = '#0BF5F2';
+                  ctx.lineWidth = 2;
+                  ctx.moveTo(create_x(0), create_y(points_2017[0]));
+                  for (var i = 1; i <= xmax; i++) {
+                    ctx.lineTo(create_x(i), create_y(points_2017[i]));
+                    if (i >= 19){
+                      break;
+                    }
+                  }
+                  ctx.stroke();
+
+                  // create line result 2018
+                  ctx.beginPath();
+                  ctx.strokeStyle = '#0000FF';
+                  ctx.lineWidth = 2;
+                  ctx.moveTo(create_x(0), create_y(points_2018[0]));
+                  for (var i = 1; i <= xmax; i++) {
+                    ctx.lineTo(create_x(i), create_y(points_2018[i]));
+                    if (i >= 19){
+                      break;
+                    }
+                  }
+                  ctx.stroke();
+
+                  // create table
+                  set_left = 135
+                  table_y = createTransform([0, xmax], [750, 1300]);
+                  table_x = createTransform([2018, 2015], [600, set_left]);
+                  padding = 154
+                  for (var i = 0; i <= xmax; i++) {
+                    ctx.font = "bold 15px Arial"
+                    ctx.fillText(i, 100, table_y(i));
+                    ctx.font = "15px Arial"
+                    ctx.fillText(countries_2015[i], set_left, table_y(i));
+                    ctx.fillText(countries_2016[i], set_left + padding, table_y(i));
+                    ctx.fillText(countries_2017[i], set_left + 2 * padding, table_y(i));
+                    ctx.fillText(countries_2018[i], set_left + 3 * padding, table_y(i));
+                  }
+                  for (var i = 2015; i <= 2018; i++) {
+                    ctx.font = "bold 15px Arial"
+                    ctx.fillText(i, table_x(i), 720);
+                  }
+                }
+              }
+            txtFile.open("GET", fileName);
+            txtFile.send();
+              function createTransform(domain, range){
+              var domain_min = domain[0]
+              var domain_max = domain[1]
+              var range_min = range[0]
+              var range_max = range[1]
+
+              // formulas to calculate the alpha and the beta
+             	  var alpha = (range_max - range_min) / (domain_max - domain_min)
+              var beta = range_max - alpha * domain_max
+
+              // returns the function for the linear transformation (y= a * x + b)
+              return function(x){
+                return alpha * x + beta;
+              }
+            }
+          </script>
+        </div>
+    </body>
+</html>
