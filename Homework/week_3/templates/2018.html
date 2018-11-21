@@ -15,7 +15,6 @@
         <title>Verstappen</title>
     </head>
     <body>
-
         <div class="topnav">
           <a class="navbar-brand" href="/">Week 3</a>
           <a class="navbar-brand" href="index.html">Overzicht</a>
@@ -26,7 +25,6 @@
           <a class="navbar-brand" href="2018.html">2018</a>
           <a class="navbar-brand" href="data.html">Data</a>
         </div>
-
         <div class="container-fluid">
           <h1 align=center>Max Verstappen resultaten 2018</h1>
           <canvas id="myCanvas" width=1500 height=1500 ></canvas>
@@ -53,12 +51,18 @@
                   var ctx = can.getContext('2d');
 
                   // set maximum for axis
-                  xmax = countries_2018.length - 1
+                  xmax = countries_2015.length - 1
                   ymax = 25
+                  x_begin = 100
+                  x_end = 1200
+                  y_end = 50
+                  y_begin = 600
+                  set_left = 135
+                  padding = 154
 
                   // create axis with transforms function
-                  create_y = createTransform([ymax, 0], [50,600]);
-                  create_x = createTransform([0, xmax], [100,1200]);
+                  create_y = createTransform([ymax, 0], [y_end,y_begin]);
+                  create_x = createTransform([0, xmax], [x_begin,x_end]);
 
                   // set y-as
                   for (var i = 0; i <= ymax; i += 1) {
@@ -76,7 +80,7 @@
                     ctx.beginPath();
                     ctx.lineWidth = 0.3;
                     ctx.strokeStyle = '#808080';
-                    ctx.moveTo(100, create_y(i));
+                    ctx.moveTo(x_begin, create_y(i));
                     ctx.lineTo(create_x(xmax), create_y(i));
                     ctx.stroke();
                   }
@@ -94,20 +98,13 @@
                   ctx.strokeStyle = '#000';
 
                   // x-as
-                  ctx.moveTo(100, 600);
-                  ctx.lineTo(1200, 600);
+                  ctx.moveTo(x_begin, y_begin);
+                  ctx.lineTo(x_end, y_begin);
 
                   // y-as
-                  ctx.moveTo(100, 50);
-                  ctx.lineTo(100, 600);
+                  ctx.moveTo(x_begin, y_end);
+                  ctx.lineTo(x_begin, y_begin);
                   ctx.stroke();
-
-                  // create legend
-                  ctx.font = "20px Arial"
-                  ctx.fillText("Legende:", 1250, 115);
-                  ctx.strokeStyle = '#0000FF';
-                  ctx.strokeText("--", 1250, 200);
-                  ctx.fillText("2018", 1275, 200);
 
                   // create y lable
                   ctx.save();
@@ -135,12 +132,10 @@
                   ctx.stroke();
 
                   // create table
-                  set_left = 135
                   table_y = createTransform([0, xmax], [750, 1300]);
-                  padding = 154
                   for (var i = 0; i <= xmax; i++) {
                     ctx.font = "bold 15px Arial"
-                    ctx.fillText(i, 100, table_y(i));
+                    ctx.fillText(i, x_begin, table_y(i));
                     ctx.font = "15px Arial"
                     ctx.fillText(countries_2018[i], set_left, table_y(i));
                   }

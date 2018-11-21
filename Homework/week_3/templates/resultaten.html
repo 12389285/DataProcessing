@@ -63,13 +63,27 @@
                   var can = document.getElementById('myCanvas');
                   var ctx = can.getContext('2d');
 
-                  // set maximum for axis
+                  // set all variables
                   xmax = countries_2015.length - 1
                   ymax = 25
+                  x_begin = 100
+                  x_end = 1200
+                  y_end = 50
+                  y_begin = 600
+                  year_begin = 2015
+                  year_end = 2018
+                  set_left = 135
+                  padding = 154
+                  set_line = 1250
+                  set_year = 1275
+                  set_2015 = 140
+                  set_2016 = 160
+                  set_2017 = 180
+                  set_2018 = 200
 
                   // create axis with transforms function
-                  create_y = createTransform([ymax, 0], [50,600]);
-                  create_x = createTransform([0, xmax], [100,1200]);
+                  create_y = createTransform([ymax, 0], [y_end,y_begin]);
+                  create_x = createTransform([0, xmax], [x_begin, x_end]);
 
                   // set y-as
                   for (var i = 0; i <= ymax; i += 1) {
@@ -83,11 +97,11 @@
                     ctx.lineTo(101, create_y(i));
                     ctx.stroke();
 
-                    // create thin lines to read data
+                    // create thin lines to read data better
                     ctx.beginPath();
                     ctx.lineWidth = 0.3;
                     ctx.strokeStyle = '#808080';
-                    ctx.moveTo(100, create_y(i));
+                    ctx.moveTo(x_begin, create_y(i));
                     ctx.lineTo(create_x(xmax), create_y(i));
                     ctx.stroke();
                   }
@@ -105,29 +119,29 @@
                   ctx.strokeStyle = '#000';
 
                   // x-as
-                  ctx.moveTo(100, 600);
-                  ctx.lineTo(1200, 600);
+                  ctx.moveTo(x_begin, y_begin);
+                  ctx.lineTo(x_end, y_begin);
 
                   // y-as
-                  ctx.moveTo(100, 50);
-                  ctx.lineTo(100, 600);
+                  ctx.moveTo(x_begin, y_end);
+                  ctx.lineTo(x_end, y_begin);
                   ctx.stroke();
 
                   // create legend
                   ctx.font = "20px Arial"
-                  ctx.fillText("Legende:", 1250, 115);
+                  ctx.fillText("Legende:", set_line, 115);
                   ctx.strokeStyle = '#f00';
-                  ctx.strokeText("--", 1250, 140);
-                  ctx.fillText("2015", 1275, 140);
+                  ctx.strokeText("--", set_line, set_2015);
+                  ctx.fillText("2015", set_year, set_2015);
                   ctx.strokeStyle = '#00FF00';
-                  ctx.strokeText("--", 1250, 160);
-                  ctx.fillText("2016", 1275, 160);
+                  ctx.strokeText("--", set_line, set_2016);
+                  ctx.fillText("2016", set_year, set_2016);
                   ctx.strokeStyle = '#0BF5F2';
-                  ctx.strokeText("--", 1250, 180);
-                  ctx.fillText("2017", 1275, 180);
+                  ctx.strokeText("--", set_line, set_2017);
+                  ctx.fillText("2017", set_year, set_2017);
                   ctx.strokeStyle = '#0000FF';
-                  ctx.strokeText("--", 1250, 200);
-                  ctx.fillText("2018", 1275, 200);
+                  ctx.strokeText("--", set_line, set_2018);
+                  ctx.fillText("2018", set_year, set_2018);
 
                   // create y lable
                   ctx.save();
@@ -194,20 +208,18 @@
                   ctx.stroke();
 
                   // create table
-                  set_left = 135
                   table_y = createTransform([0, xmax], [750, 1300]);
-                  table_x = createTransform([2018, 2015], [600, set_left]);
-                  padding = 154
+                  table_x = createTransform([year_end, year_begin], [y_begin, set_left]);
                   for (var i = 0; i <= xmax; i++) {
                     ctx.font = "bold 15px Arial"
-                    ctx.fillText(i, 100, table_y(i));
+                    ctx.fillText(i, x_begin, table_y(i));
                     ctx.font = "15px Arial"
                     ctx.fillText(countries_2015[i], set_left, table_y(i));
                     ctx.fillText(countries_2016[i], set_left + padding, table_y(i));
                     ctx.fillText(countries_2017[i], set_left + 2 * padding, table_y(i));
                     ctx.fillText(countries_2018[i], set_left + 3 * padding, table_y(i));
                   }
-                  for (var i = 2015; i <= 2018; i++) {
+                  for (var i = year_begin; i <= year_end; i++) {
                     ctx.font = "bold 15px Arial"
                     ctx.fillText(i, table_x(i), 720);
                   }
