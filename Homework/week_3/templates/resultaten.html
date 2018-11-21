@@ -85,7 +85,7 @@
                   create_y = createTransform([ymax, 0], [y_end,y_begin]);
                   create_x = createTransform([0, xmax], [x_begin, x_end]);
 
-                  // set y-as
+                  // set y-as settings
                   for (var i = 0; i <= ymax; i += 1) {
                     ctx.fillText(i, 75, create_y(i));
 
@@ -124,7 +124,7 @@
 
                   // y-as
                   ctx.moveTo(x_begin, y_end);
-                  ctx.lineTo(x_end, y_begin);
+                  ctx.lineTo(x_begin, y_begin);
                   ctx.stroke();
 
                   // create legend
