@@ -1,3 +1,5 @@
+<!-- Max Simons (12389285) -->
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -6,171 +8,154 @@
         <script type="text/javascript" src="d3/d3.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
         <svg width="1000" height="600"></svg>
-        <style>
-          body {
-            font: 10px sans-serif;
-          }
-
-          .axis path,
-          .axis line {
-            fill: none;
-            stroke: #000;
-            shape-rendering: crispEdges;
-          }
-
-          .bar {
-            fill: #121F45;
-          }
-
-          .bar:hover {
-            fill: #CB2026 ;
-          }
-
-          .xAxis path {
-            display: none;
-          }
-
-          .d3-tip {
-            line-height: 2;
-            font-weight: bold;
-            padding: 3px;
-            background: rgba(255, 202, 6, 0.8);
-            color: black;
-            border-radius: 4px;
-          }
-
-          .d3-tip:after {
-            box-sizing: border-box;
-            display: inline;
-            font-size: 15px;
-            width: 100%;
-            line-height: 1;
-            color: rgba(255, 202, 6, 0.8);
-            content: "\25BC";
-            position: absolute;
-            text-align: center;
-          }
-
-          .d3-tip.n:after {
-            margin: -1px 0 0 0;
-            top: 100%;
-            left: 0;
-          }
-      </style>
+        <link rel="stylesheet" href="static/styles.css">
     </head>
     <body>
         <script type="text/javascript">
           d3.select("body")
-              .append("h1")
-              .text("Points Formula 1 season 2018");
+            .append("h2")
+              .text("Author: Max Simons(12389285)")
+            .append("p")
+              .text("The bar chart above is a visualization of the points of\
+                    Max Verstappen earned in 2018. With a total of\
+                    21 races this was the longest season the drivers have ever had.\
+                    It was a great season as you can see, with a total of 11 podiums\
+                    and two victories this was by far the best season for the dutch driver.\
+                    As you can see the bars are filled with the colors of Red Bull Racing.\
+                    When you move your mouse on the bars you can see how many points\
+                    the driver earned that Grand Prix and the race position he finished.")
 
-          // set margin
-          var svg = d3.select("svg"),
-              margin = {top: 20, right: 20, bottom: 100, left: 120},
-              width = +svg.attr("width") - margin.left - margin.right,
-              height = +svg.attr("height") - margin.top - margin.bottom;
+            // set margin
+            var svg = d3.select("svg"),
+                margin = {top: 100, right: 20, bottom: 0, left: 120},
+                width = +svg.attr("width") - margin.left - margin.right,
+                height = +svg.attr("height") - margin.top - margin.bottom;
 
-          var padding = 0;
-          var bufLeft = 100;
-          var bufTop = 20;
-          var max = 25;
-          var barWidth = 20;
+            // set padding
+            var padding = 0;
+            var bufLeft = 100;
+            var barWidth = 20;
+            var topPadding = 80;
 
-          // set scaling x
-          var x_scale = d3.scaleBand()
-                .rangeRound([bufLeft ,width])
-                .padding(5);
+            // set scaling x
+            var x_scale = d3.scaleBand()
+                  .rangeRound([bufLeft ,width])
+                  .padding(5);
 
-          // set scaling y
-          var y_scale = d3.scaleLinear()
-                .rangeRound([bufTop, height]);
+            // set scaling y
+            var y_scale = d3.scaleLinear()
+                  .rangeRound([margin.top, height]);
 
-          // transform coordinates for x and y position
-          var g = svg.append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            // transform coordinates for x and y position
+            var g = svg.append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-          // set x axis
-          var xAxis = d3.axisBottom()
-              .scale(x_scale);
+            // set x axis
+            var xAxis = d3.axisBottom()
+                .scale(x_scale);
 
-          // set y axis
-          var yAxis = d3.axisLeft()
-              .scale(y_scale)
-              .ticks(25);
+            // set y axis
+            var yAxis = d3.axisLeft()
+                .scale(y_scale)
+                .ticks(25);
 
-          // create tip
-          var tip = d3.tip()
-              .attr('class', 'd3-tip')
-              .offset([-10, 0])
-              .html(function(d) {
-                return "<strong>Points:</strong> <span style='color:#CB2026'>"
-                      + d.PTS_2018 + "</span>";
-              })
-          svg.call(tip);
+            // create tip
+            var tip = d3.tip()
+                .attr('class', 'd3-tip')
+                .offset([-10, padding])
+                .html(function(d) {
+                  return "<strong>Points:</strong> <span style='color:#CB2026'>"
+                        + d.PTS_2018 + "</span><br><strong>Finished:</strong> \
+                        <span style='color:#CB2026'>"
+                        + d.PLACE + "</span>";
+                })
+            svg.call(tip);
 
-          // parse data from json file
-          d3.json("GP.json").then(function(data)
-          {
-              data2 = data.filter(function(d){return d["GP_2018"] != null;})
-              // x domain
-              x_scale.domain(data2.map(function (d)
-              {
-                return d.GP_2018;
-              }));
+            // parse data from json file
+            d3.json("data/race.json").then(function(data)
+            {
+                data2 = data.filter(function(d) {
+                  return d["GP_2018"] != null;
+                });
+                // x domain
+                x_scale.domain(data2.map(function (d)
+                {
+                  return d.GP_2018;
+                }));
 
-              // y domain
-              y_scale.domain([max, 0]);
+                // set maximum
+                var max = d3.max(data2, function(d) {
+                  return d.PTS_2018;
+                });
 
-              // create x axis
-              svg.append("g")
-                .attr("class", "xaxis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis)
-                .selectAll("text")
-                  .style("text-anchor", "end")
-                  .attr("transform", "rotate(-45)" )
+                // y domain
+                y_scale.domain([max, padding]);
 
-              // create x axis label
-              svg.append("text")
-
-              // create y axis
-              svg.append("g")
-                .attr("class", "yaxis")
-                .attr("transform", "translate(100," + padding + ")")
-                .call(yAxis)
-
-              // create y axis labe;
-              svg.append("text")
-                  .attr("transform", "rotate(-90)")
-                  .attr("x", 0 - padding)
-                  .attr("y", 0 - (height/2))
-                  .attr("dy", "0.55em")
-                  .attr("fill", "#000")
+                // create title
+                svg.append("text")
+                  .attr("class", "title")
+                  .attr("x", width/1.8)
+                  .attr("y", topPadding/2)
                   .attr("text-anchor", "middle")
-                  .text("Points")
+                  .text("F1 results Max Verstappen season 2018")
 
-              // create bar chart
-              svg.selectAll(".bar")
-                .data(data2)
-                .enter()
-                  .append("rect")
-                  .attr("class", "bar")
-                  .attr("fill", function(d) {
-                    return "rgb(0, 0, " + (d * 20) + ")";
-                  })
-                  .attr("x", function (d, i) {
-                    return (i * 34) + 129;
-                  })
-                  .attr("width", barWidth)
-                  .attr("y", function (d) {
-                    return y_scale(d.PTS_2018);
-                  })
-                  .attr("height", function (d) {
-                    return height - y_scale(d.PTS_2018);
-                  })
-                  .on('mouseover', tip.show)
-                  .on('mouseout', tip.hide);
-            })
+                // create x axis
+                svg.append("g")
+                  .attr("class", "xaxis")
+                  .attr("transform", "translate(0," + height + ")")
+                  .call(xAxis)
+                  .selectAll("text")
+                    .style("text-anchor", "end")
+                    .attr("transform", "rotate(-45)" )
+
+                // create x axis label
+                svg.append("text")
+                    .attr("class", "label")
+                    .attr("x", width/1.8)
+                    .attr("y", height + topPadding)
+                    .attr("text-anchor", "middle")
+                    .text("Grand Prix")
+
+                // create y axis
+                svg.append("g")
+                  .attr("class", "yaxis")
+                  .attr("transform", "translate(100," + padding + ")")
+                  .call(yAxis)
+
+                // create y axis label;
+                svg.append("text")
+                    .attr("class", "label")
+                    .attr("transform", "rotate(-90)")
+                    .attr("x", padding - y_scale((max/2)))
+                    .attr("y", 50)
+                    .attr("fill", "#000")
+                    .attr("text-anchor", "middle")
+                    .text("Points")
+
+                // set bars position
+                var space = 34
+                var startBar = 129
+
+                // create bar chart
+                svg.selectAll(".bar")
+                  .data(data2)
+                  .enter()
+                    .append("rect")
+                    .attr("class", "bar")
+                    .attr("x", function (d, i) {
+                      bars = (i * space) + startBar;
+                      return bars;
+                    })
+                    .attr("width", barWidth)
+                    .attr("y", function (d) {
+                      return y_scale(d.PTS_2018);
+                    })
+                    .attr("height", function (d) {
+                      return height - y_scale(d.PTS_2018);
+                    })
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide);
+              })
         </script>
     </body>
 </html>
