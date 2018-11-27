@@ -40,12 +40,12 @@
 
             // set scaling x
             var x_scale = d3.scaleBand()
-                  .rangeRound([bufLeft ,width])
-                  .padding(5);
+                .rangeRound([bufLeft ,width])
+                .padding(5);
 
             // set scaling y
             var y_scale = d3.scaleLinear()
-                  .rangeRound([margin.top, height]);
+                .rangeRound([margin.top, height]);
 
             // transform coordinates for x and y position
             var g = svg.append("g")
@@ -111,11 +111,11 @@
 
                 // create x axis label
                 svg.append("text")
-                    .attr("class", "label")
-                    .attr("x", width/1.8)
-                    .attr("y", height + topPadding)
-                    .attr("text-anchor", "middle")
-                    .text("Grand Prix")
+                  .attr("class", "label")
+                  .attr("x", width/1.8)
+                  .attr("y", height + topPadding)
+                  .attr("text-anchor", "middle")
+                  .text("Grand Prix")
 
                 // create y axis
                 svg.append("g")
@@ -125,13 +125,13 @@
 
                 // create y axis label;
                 svg.append("text")
-                    .attr("class", "label")
-                    .attr("transform", "rotate(-90)")
-                    .attr("x", padding - y_scale((max/2)))
-                    .attr("y", 50)
-                    .attr("fill", "#000")
-                    .attr("text-anchor", "middle")
-                    .text("Points")
+                  .attr("class", "label")
+                  .attr("transform", "rotate(-90)")
+                  .attr("x", padding - y_scale((max/2)))
+                  .attr("y", 50)
+                  .attr("fill", "#000")
+                  .attr("text-anchor", "middle")
+                  .text("Points")
 
                 // set bars position
                 var space = 34
