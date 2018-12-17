@@ -8,31 +8,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
         <!-- Bootstrap CSS -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="../static/styles.css" rel="stylesheet"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <script src="http://d3js.org/d3.v5.min.js"></script>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
         <script src="http://d3js.org/queue.v1.min.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
         <script src="../d3-tip.js"></script>
-        <script src="../Javascript/data.js"></script>
+        <script src="../Javascript/map.js"></script>
+
         <title>CO2 emmissions</title>
     </head>
     <body>
+      <header>
         <div class="topnav">
             <a class="navbar-brand" href="https://12389285.github.io/DataProcessing/">Github</a>
             <a class="navbar-brand" href="../index.html">Home</a>
-            <a class="navbar-brand" href="data.html">Data</a>
+            <a class="navbar-brand" href="data.html">CO2 Emmission</a>
+
         </div>
+      </header>
+      <div class="container-fluid text-center">
+        <h2>CO2 emmissions world wide</h2>
+        <div class="btn-group pull-center">
+          <button type="button" data-toggle="dropdown" id="dropdownMenuButton">
+             Year <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="m" value=0 href="#">2012</a></li>
+            <li><a class="m" value=1 href="#">2013</a></li>
+            <li><a class="m" value=2 href="#">2014</a></li>
+          </ul>
+        <div id="mbars">
+  		  </div>
+        </div>
+        <div class="row">
+          <div class="col-7" id="map">
+            <h3>World map</h3>
+          </div>
+          <div class="col-5" id="barchart">
+            <h3>2012-2014</h3>
+          </div>
+        </div>
+      </div>
+      <footer class="text-center">
         <div>
-          <p><font size="6"><b>CO2 Emmission per country</b></font><br><br>
-          In the world map below you can see the CO2 emmission per country. You can swith between 2012-2014<br><br><br>
-          <b>Author:</b> Max Simons<br>
-          <b>Studentnumber:</b> 12389285
-          </p>
+            <span class="text">Max Simons // 12389285 // University Of Amsterdam // 2018</span>
         </div>
+      </footer>
     </body>
 </html>

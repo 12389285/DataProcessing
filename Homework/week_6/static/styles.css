@@ -9,13 +9,22 @@ html, body
 /* ensure content is below navbar */
 div.container-fluid
 {
-    padding-top: 56px;
+    padding: 0em 5em 3em 5em;
+}
+
+svg {
+    border-radius: 6px;
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 5px #ddd;
 }
 
 /* fill viewport */
 div.container-fluid, div.row, div.col, div.jumbotron
 {
     height: 100%;
+    margin-right: -80px;
+    margin-left: -20px;
 }
 
 /* remove padding within column */
@@ -40,16 +49,10 @@ pre
     white-space: pre-wrap;
 }
 
-/* highlight spans */
-span
-{
-    background-color: #ff0;
-}
-
-h
-{
-    font-size: 23px;
-    border: none;
+.title {
+  font-family: sans-serif;
+  font-size: 20px;
+  fill: black;
 }
 
 /* Add a black background color to the top navigation */
@@ -87,18 +90,6 @@ p
   text-align: justify;
   padding-top: 25px;
   padding-left: 25px;
-}
-
-.column {
-    float: left;
-    width: 60%;
-}
-
-.column img{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
 }
 
 #compare
@@ -170,11 +161,29 @@ pointer-events: none;
   left: 100%;
 }
 
-   /* text{
-  pointer-events:none;
-} */
-
 .details{
   color: white;
   background-color: rgba(0, 0, 0, 0);
+}
+
+footer {
+    border-top: .05rem;
+    background-color: lightgrey;
+    padding: 15px;
+}
+
+.bar {
+    fill: grey;
+}
+
+.label {
+  font-family: sans-serif;
+  font-size: 5px;
+  fill: black;
+}
+
+.dropdown {
+  color: grey;
+  margin-left: 0px;
+  margin-top: 400px;
 }
